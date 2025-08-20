@@ -6,7 +6,8 @@ const demoRouter = Router();
 
 demoRouter
     .get("/", demoController.getAll)
-    .get("/:id", demoController.get);
+    .get("/danger", demoController.danger)
+    .get("/:id", demoController.get)
 
 
 export default demoRouter;

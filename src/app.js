@@ -1,15 +1,15 @@
 import express from "express";
 import demoRouter from "./router/demo.router.js";
 
-// Config et variables
+// ==== Config et variables ====
 const app = express();
 const { PORT, NODE_ENV } = process.env;
 
 
-// todo: Middleware (niveau App)
-// req : requête
-// res: réponse
-// next: méthode pour passer au middleware suivant
+// todo1: Middleware (niveau App)
+    // req : requête
+    // res: réponse
+    // next: méthode pour passer au middleware suivant
 app.use( (req, res, next) => {
     // Récupération les infos de la route
     const url = req.url;
@@ -28,7 +28,26 @@ app.use( (req, res, next) => {
 
 app.use('/demo', demoRouter);
 
-// Serveur
+// todo2: Middleware de gestion d'erreur
+// Toujours en fin juste avant le app.listen
+    // error
+    // req : requête
+    // res: réponse
+    // next: méthode pour passer au middleware suivant
+app.use((error, req, res, next) => {
+    // Réponse adaptée pour "la production"
+    if (NODE_ENV === "prod") {
+        res.status(500).send({ message: "Erreur interne! 🥲" });
+        return;
+    }
+
+    next(error);
+
+    // Todo => Coder le nécessaire pour conserver une "trace" des erreurs
+})
+
+
+// ==== Serveur ====
 app.listen(PORT, (error) => {
     if(error) {
         console.log('Erreur lors du démarrage du serveur !', error);
